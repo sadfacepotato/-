@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>한화이글스 마이너 갤러리리 v1.0</title>
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #f6f8fa;
+      padding: 30px;
+      color: #333;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    form, .post {
+      background: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      font-size: 1em;
+    }
+    .comment-section {
+      margin-top: 15px;
+      padding-top: 10px;
+      border-top: 1px dashed #ccc;
+    }
+    .comment {
+      background-color: #f1f1f1;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🦅 한화이글스 마이너 갤러리 v1.0🦅 </h1>
+  <form id="postForm">
+    <input type="text" id="title" placeholder="제목" required>
+    <textarea id="content" placeholder="내용" required></textarea>
+    <button type="submit">글 올리기</button>
+  </form>
+
+  <div id="posts"></div>
+
+  <script>
+    let postCount = 0;
+
+    document.getElementById('postForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('title').value;
+      const content = document.getElementById('content').value;
+
+      const post = document.createElement('div');
+      post.className = 'post';
+      const postId = 'post-' + (++postCount);
+
+      post.innerHTML = `
+        <h3>${title}</h3>
+        <p>${content}</p>
+        <div class="comment-section">
+          <h4>💬 댓글</h4>
+          <div class="comment-list" id="comments-${postId}"></div>
+          <input type="text" placeholder="댓글 작성" id="input-${postId}">
+          <button onclick="addComment('${postId}')">댓글 달기</button>
+        </div>
+      `;
+
+      document.getElementById('posts').prepend(post);
+      this.reset();
+    });
+
+    function addComment(postId) {
+      const input = document.getElementById('input-' + postId);
+      const commentList = document.getElementById('comments-' + postId);
+
+      if (input.value.trim() !== '') {
+        const comment = document.createElement('div');
+        comment.className = 'comment';
+        comment.textContent = input.value;
+        commentList.appendChild(comment);
+        input.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
